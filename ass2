@@ -1,0 +1,51 @@
+install mpi
+make a cluster (opt)
+kramers? book (4 auths) - slides
+pragmas:
+	- init
+	- no. of procs
+	- rank
+	- send
+	- receive
+	- finalisation
+
+Tasks: Sum of n using various mods:
+1. "Naive" method
+  - rank 0 master, send parts of the arr to each proc based on rank
+
+2. proc_0: Broadcast entire array, proc_i: sums up it's part
+	How to broadcast?
+	MPI_Bcast(buf, count, datatype, source, comm(=mpi)): every proc
+		calls this func. source is sender, every non source is receiver.
+
+3. use reduce to combine the partial sums at each proc.
+	MPI_Reduce(send_buf, read_buf, count, datatype, MPI_op, target, comm)
+
+4. Use scatter to send parts of the array.
+	MPI_Scatter(buf, count, send datatype,  ...)
+
+5. Implement a new algo:
+	- no. of procs should be taken as power of 2
+	- size of array should be power f 2 (pad with 0s)
+
+	- each process recursively keeps half the array with itself, and sends
+	  the remaining half to the leader of the otehr half segment
+	  => in log(p) stages array dist.
+	- compute partial sums
+	- each node sends to it's parent
+
+	- check to see the optimal no. of processors required
+
+
+
+if(rank==0) {
+	create data
+	sned data
+	process data
+	receive partitions
+	compute final sum
+} else {
+	receive data
+	process
+	send
+}
