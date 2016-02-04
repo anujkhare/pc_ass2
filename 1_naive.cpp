@@ -1,6 +1,4 @@
 #include<iostream>
-#include<string>
-#include<vector>
 #include<mpi.h>
 using namespace std;
 
@@ -60,6 +58,7 @@ int main(int argc, char **argv)
 		int arr_part[part_size], sum=0;
 		MPI_Recv(&arr_part, part_size, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 		printf("received by proc %d: %d\n", myrank, arr_part[0]);
+
 		/* sum and send the sum back */
 		for (int i=0; i<part_size; ++i) {
 			sum += arr_part[i];
